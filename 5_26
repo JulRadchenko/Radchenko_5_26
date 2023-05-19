@@ -1,1 +1,95 @@
 # Вариант 26. F(1) = 1; Q(1) = 1; F(w) = F(w-1) + 2*Q(w-1) при w > 1, Q(w) = Q(w-1) - 2*F(w-1) при w > 1. 
+import time
+import matplotlib.pyplot as plt
+y1 = []
+y2 = []
+y3 = []
+y4 = []
+x = []
+def rF(w):
+    if w == 1:
+        return 1
+    if w > 1:
+        return rF(w-1) + 2*rQ(w-1)
+def rQ(n):
+    if n == 1:
+        return 1
+    if n > 1:
+        return rQ(n-1) - 2*rF(n-1)
+def iF(h):
+    if h == 1:
+        return 1
+    if h > 1:
+        F = 1
+        Q = 1
+        for i in range(2, h+1):
+            F, Q = F + 2* Q, Q - 2* F
+        return F
+
+def iQ(h):
+    if h == 1:
+        return 1
+    if h > 1:
+        F = 1
+        Q = 1
+        for i in range(2, h + 1):
+            F, Q = F + 2 * Q, Q - 2 * F
+        return Q
+try:
+    print("При вводе 20 для функции rF, вычисляемой рекурсивно, получаем:")
+    print(str(rF(20)))
+except:
+    print('При вводе 20 для функции rF, вычисляемой рекурсивно, значение слишком велико и выдаёт ошибку')
+print('')
+try:
+    print("При вводе 20 для функции rQ, вычисляемой рекурсивно, получаем:")
+    print(str(rQ(20)))
+except:
+    print('При вводе 20 для функции rQ, вычисляемой рекурсивно, значение слишком велико и выдаёт ошибку')
+print('')
+try:
+    print("При вводе 20 для функции iF, вычисляемой итерационно, получаем:")
+    print(str(iF(20)))
+except:
+    print('При вводе 20 для функции iF, вычисляемой итерационно, значение слишком велико и выдаёт ошибку')
+print('')
+try:
+    print("При вводе 20 для функции iQ, вычисляемой итерационно, получаем:")
+    print(str(iQ(20)))
+except:
+    print('При вводе 20 для функции iQ, вычисляемой итерационно, значение слишком велико и выдаёт ошибку')
+
+print('')
+print('Введите количество измерений:')
+m = int(input())
+print('№' + '    ' + 'Рекурсивно' + '    ' + 'Итерационно')
+for i in range(1,m+1):
+    x.append(i)
+    t11 = time.perf_counter()
+    rF(i)
+    t12 = time.perf_counter()
+    y1.append(t12-t11)
+    print(str(i) + ' | ' + str(y1) + ' | ', end ='')
+    t21 = time.perf_counter()
+    rQ(i)
+    t22 = time.perf_counter()
+    y2.append(t22 - t21)
+    print(str(i) + ' | ' + str(y2) + ' | ', end='')
+    t31 = time.perf_counter()
+    iF(i)
+    t32 = time.perf_counter()
+    y3.append(t32 - t31)
+    print(str(i) + ' | ' + str(y3) + ' | ', end='')
+    t41 = time.perf_counter()
+    iQ(i)
+    t42 = time.perf_counter()
+    y4.append(t42 - t41)
+    print(str(i) + ' | ' + str(y4) + ' | ')
+plt.xlabel('Число, которое подаётся')
+plt.ylabel('Время поиска')
+plt.plot(x, y1, label='Рекурсивно для F')
+plt.plot(x, y2, label='Рекурсивно для Q')
+plt.plot(x, y3, label='Итеративно для F')
+plt.plot(x, y4, label='Итеративно для Q')
+plt.legend()
+plt.show()
